@@ -887,7 +887,7 @@ function CameraScreen({ scan, onTap, collected, bookFont, onBack }) {
           <span>종이책의 글자를 읽고 있어…</span>
         ) : found.length === 0 ? (
           <span>
-            <b>궁금한 단어를 눌러봐.</b> 점선이 그어진 말을 누를 수 있어!
+            <b>궁금한 단어를 눌러봐.</b>
           </span>
         ) : (
           <span>
