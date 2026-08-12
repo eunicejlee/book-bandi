@@ -3,7 +3,7 @@
    - 글꼴은 한 번 받아온 뒤부터 저장본을 쓴다
    앱을 고친 뒤에는 아래 VERSION 숫자를 올려주세요. */
 
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL_CACHE = "chaekbandi-shell-" + VERSION;
 const FONT_CACHE = "chaekbandi-font-" + VERSION;
 

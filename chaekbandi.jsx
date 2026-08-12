@@ -5,25 +5,6 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
    프로토타입 · 카메라/OCR/AI 설명/AI 그림은 모두 시뮬레이션
    ========================================================= */
 
-/* ---------------- 저장소 (PWA 전용) ---------------- */
-
-const STORE_KEY = "chaekbandi:v1";
-
-function loadStore() {
-  try {
-    return JSON.parse(window.localStorage.getItem(STORE_KEY)) || {};
-  } catch (e) {
-    return {};
-  }
-}
-function saveStore(data) {
-  try {
-    window.localStorage.setItem(STORE_KEY, JSON.stringify(data));
-  } catch (e) {
-    /* 저장 불가 환경이면 그냥 넘어간다 */
-  }
-}
-
 /* ---------------- 데이터 ---------------- */
 
 const LEVELS = [
@@ -539,14 +520,11 @@ const Ico = {
 /* ---------------- 앱 ---------------- */
 
 export default function App() {
-  const saved = useRef(loadStore()).current;
   const [screen, setScreen] = useState("home");
-  const [level, setLevel] = useState(saved.level || "mid");
-  const [textSize, setTextSize] = useState(saved.textSize || "m");
-  const [notif, setNotif] = useState(saved.notif !== false);
-  const [collected, setCollected] = useState(
-    Array.isArray(saved.collected) ? saved.collected.filter((c) => WORDS[c.id]) : []
-  ); // [{id, at}]
+  const [level, setLevel] = useState("mid");
+  const [textSize, setTextSize] = useState("m");
+  const [notif, setNotif] = useState(true);
+  const [collected, setCollected] = useState([]); // [{id, at}]
   const [sheet, setSheet] = useState(null); // {id, comic}
   const [toast, setToast] = useState(null);
   const [scan, setScan] = useState("idle"); // idle | scanning | done
@@ -563,29 +541,10 @@ export default function App() {
 
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
-  // 바뀔 때마다 기기에 저장
-  useEffect(() => {
-    saveStore({ collected, level, textSize, notif });
-  }, [collected, level, textSize, notif]);
-
-  const openCamera = useCallback(() => {
+  const openCamera = () => {
     setScreen("camera");
     setScan("scanning");
     setTimeout(() => setScan("done"), 1600);
-  }, []);
-
-  // 홈 화면 바로가기(?go=camera)로 열면 바로 카메라부터
-  useEffect(() => {
-    try {
-      if (new URLSearchParams(window.location.search).get("go") === "camera") openCamera();
-    } catch (e) {
-      /* 무시 */
-    }
-  }, [openCamera]);
-
-  const resetAll = () => {
-    setCollected([]);
-    saveStore({ collected: [], level, textSize, notif });
   };
 
   const tapWord = (id) => {
@@ -691,8 +650,6 @@ export default function App() {
               setTextSize={setTextSize}
               notif={notif}
               setNotif={setNotif}
-              onReset={resetAll}
-              count={collected.length}
             />
           )}
         </div>
@@ -1128,8 +1085,7 @@ function LogScreen({ collected, onStart }) {
 
 /* ---------------- 설정 ---------------- */
 
-function SettingsScreen({ level, setLevel, textSize, setTextSize, notif, setNotif, onReset, count }) {
-  const [confirm, setConfirm] = useState(false);
+function SettingsScreen({ level, setLevel, textSize, setTextSize, notif, setNotif }) {
   return (
     <div className="cb-page-scroll">
       <h1 className="cb-title">⚙️ 설정</h1>
@@ -1205,35 +1161,6 @@ function SettingsScreen({ level, setLevel, textSize, setTextSize, notif, setNoti
           <button className="cb-switch on locked" aria-disabled="true">
             <span />
           </button>
-        </div>
-      </div>
-
-      <div className="cb-set">
-        <div className="cb-row">
-          <div>
-            <b>발견한 단어 지우기</b>
-            <span>모아 둔 {count}개의 단어를 모두 비워.</span>
-          </div>
-          {confirm ? (
-            <div className="cb-confirm">
-              <button
-                className="cb-danger"
-                onClick={() => {
-                  onReset();
-                  setConfirm(false);
-                }}
-              >
-                지울래
-              </button>
-              <button className="cb-cancel" onClick={() => setConfirm(false)}>
-                취소
-              </button>
-            </div>
-          ) : (
-            <button className="cb-reset" onClick={() => setConfirm(true)} disabled={count === 0}>
-              초기화
-            </button>
-          )}
         </div>
       </div>
 
@@ -1573,11 +1500,6 @@ const CSS = `
 .cb-noti{display:flex; align-items:center; gap:10px; margin-top:14px; background:#F4F3F8; border-radius:16px; padding:12px;}
 .cb-noti b{display:block; font-size:11.5px; color:var(--mute);}
 .cb-noti span{font-size:13px; color:#3B3550; line-height:1.5;}
-.cb-reset{font-size:13px; font-weight:600; color:#F2668E; background:#FFEDF2; padding:11px 16px; border-radius:14px;}
-.cb-reset:disabled{color:var(--mute); background:#F4F3F8;}
-.cb-confirm{display:flex; gap:6px;}
-.cb-danger{font-size:13px; font-weight:600; color:#fff; background:#F2668E; padding:11px 14px; border-radius:14px;}
-.cb-cancel{font-size:13px; font-weight:600; color:var(--ink-2); background:#F4F3F8; padding:11px 14px; border-radius:14px;}
 .cb-about{display:flex; align-items:center; gap:12px; padding:22px 6px 0; opacity:.85;}
 .cb-about b{font-family:'Jua',sans-serif; font-size:15px; font-weight:400; display:block;}
 .cb-about span{font-size:12px; color:var(--ink-2);}
