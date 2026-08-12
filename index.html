@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>책반디 — 모르는 단어 때문에 책을 멈추지 마세요</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="description" content="종이책에 카메라를 비추고 궁금한 단어를 누르면 바로 이해되는 AI 독서 친구, 책반디" />
+
+<link rel="manifest" href="./manifest.json" />
+<meta name="theme-color" content="#EEF3EE" />
+<meta name="color-scheme" content="light" />
+
+<!-- iOS 홈 화면 추가용 -->
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="책반디" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+
+<!-- 공유 미리보기 -->
+<meta property="og:title" content="책반디" />
+<meta property="og:description" content="찾지 말고, 비추고 누르세요." />
+<meta property="og:type" content="website" />
+
+<!-- 글꼴 먼저 연결 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #E8EFE9;
+    overscroll-behavior: none;
+  }
+  body {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  #root { height: 100%; }
+
+  /* 앱이 뜨기 전 잠깐 보이는 화면 */
+  #splash {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #E8EFE9;
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: #6C6483;
+    font-size: 14px;
+    z-index: 9;
+    transition: opacity .3s ease;
+  }
+  #splash img { width: 84px; height: 84px; animation: bob 2.2s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  #splash.hide { opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <img src="./icons/icon-192.png" alt="책반디" />
+  <span>반디를 깨우는 중…</span>
+</div>
+
+<div id="root"></div>
+
+<script src="./app.js" defer></script>
+
+<script>
+  // 앱이 그려지면 시작 화면을 걷어낸다
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var s = document.getElementById('splash');
+      if (s) {
+        s.classList.add('hide');
+        setTimeout(function () { s.remove(); }, 350);
+      }
+    }, 250);
+  });
+
+  // 서비스 워커 등록 (GitHub Pages의 하위 경로에서도 동작하도록 상대 경로 사용)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function (err) {
+        console.log('서비스 워커 등록 실패:', err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
