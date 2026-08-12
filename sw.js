@@ -4,14 +4,14 @@
    앱을 고친 뒤에는 아래 VERSION 숫자를 올리고,
    app.vN.js 파일 이름의 숫자도 함께 올려주세요. */
 
-const VERSION = "v3";
+const VERSION = "v4";
 const SHELL_CACHE = "chaekbandi-shell-" + VERSION;
 const FONT_CACHE = "chaekbandi-font-" + VERSION;
 
 const SHELL_FILES = [
   "./",
   "./index.html",
-  "./app.v3.js",
+  "./app.v4.js",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",

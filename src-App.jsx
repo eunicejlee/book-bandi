@@ -1199,18 +1199,6 @@ function SettingsScreen({ level, setLevel, textSize, setTextSize, notif, setNoti
       <div className="cb-set">
         <div className="cb-row">
           <div>
-            <b>그림은 필요할 때만</b>
-            <span>먼저 뜻만 빠르게 보고, 어려울 때 그림을 열어.</span>
-          </div>
-          <button className="cb-switch on locked" aria-disabled="true">
-            <span />
-          </button>
-        </div>
-      </div>
-
-      <div className="cb-set">
-        <div className="cb-row">
-          <div>
             <b>발견한 단어 지우기</b>
             <span>모아 둔 {count}개의 단어를 모두 비워.</span>
           </div>
@@ -1240,7 +1228,7 @@ function SettingsScreen({ level, setLevel, textSize, setTextSize, notif, setNoti
       <div className="cb-about">
         <Bandi size={40} />
         <div>
-          <b>책반디 v1.2</b>
+          <b>책반디 v1.3</b>
           <span>찾지 말고, 비추고 누르세요.</span>
         </div>
       </div>
@@ -1569,7 +1557,6 @@ const CSS = `
 .cb-switch span{position:absolute; top:3px; left:3px; width:25px; height:25px; border-radius:50%; background:#fff; transition:transform .2s; box-shadow:0 2px 5px rgba(0,0,0,.16);}
 .cb-switch.on{background:#3FC98F;}
 .cb-switch.on span{transform:translateX(21px);}
-.cb-switch.locked{opacity:.65;}
 .cb-noti{display:flex; align-items:center; gap:10px; margin-top:14px; background:#F4F3F8; border-radius:16px; padding:12px;}
 .cb-noti b{display:block; font-size:11.5px; color:var(--mute);}
 .cb-noti span{font-size:13px; color:#3B3550; line-height:1.5;}
