@@ -71,7 +71,7 @@
 
 <div id="root"></div>
 
-<script src="./app.js" defer></script>
+<script src="./app.v3.js" defer></script>
 
 <script>
   // 앱이 그려지면 시작 화면을 걷어낸다
@@ -87,8 +87,19 @@
 
   // 서비스 워커 등록 (GitHub Pages의 하위 경로에서도 동작하도록 상대 경로 사용)
   if ('serviceWorker' in navigator) {
+    var refreshing = false;
+
+    // 새 서비스 워커가 자리를 잡으면 화면을 한 번만 새로 그린다
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./sw.js').catch(function (err) {
+      navigator.serviceWorker.register('./sw.js').then(function (reg) {
+        reg.update();
+      }).catch(function (err) {
         console.log('서비스 워커 등록 실패:', err);
       });
     });

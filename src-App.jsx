@@ -1240,7 +1240,7 @@ function SettingsScreen({ level, setLevel, textSize, setTextSize, notif, setNoti
       <div className="cb-about">
         <Bandi size={40} />
         <div>
-          <b>책반디 v1.0</b>
+          <b>책반디 v1.2</b>
           <span>찾지 말고, 비추고 누르세요.</span>
         </div>
       </div>

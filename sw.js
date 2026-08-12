@@ -1,16 +1,17 @@
 /* 책반디 서비스 워커
    - 앱 껍데기는 설치할 때 미리 저장해 두고
    - 글꼴은 한 번 받아온 뒤부터 저장본을 쓴다
-   앱을 고친 뒤에는 아래 VERSION 숫자를 올려주세요. */
+   앱을 고친 뒤에는 아래 VERSION 숫자를 올리고,
+   app.vN.js 파일 이름의 숫자도 함께 올려주세요. */
 
-const VERSION = "v2";
+const VERSION = "v3";
 const SHELL_CACHE = "chaekbandi-shell-" + VERSION;
 const FONT_CACHE = "chaekbandi-font-" + VERSION;
 
 const SHELL_FILES = [
   "./",
   "./index.html",
-  "./app.js",
+  "./app.v3.js",
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
